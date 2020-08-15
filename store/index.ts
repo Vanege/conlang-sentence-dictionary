@@ -34,7 +34,10 @@ export const actions = {
       sentenceRows[row] = isDefined(sentenceRow) ? { ...sentenceRow, ...sentenceRowPatch } : { ...emptySentenceRowFactory(), ...sentenceRowPatch }
     }
     sentenceRows = sentenceRows.filter(wR => isDefined(wR))
+    // remove the first row that names the columns
     sentenceRows.shift()
+    // remove the rows that are comments
+    sentenceRows = sentenceRows.filter(sr => !sr.english.includes('--'))
     store.commit('setSentenceRows', sentenceRows)
   }
 }
