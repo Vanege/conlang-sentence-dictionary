@@ -42,7 +42,8 @@ export default class SearchBlock extends Vue {
   searchedText: string = ''
   matchesMax: number = 20
 
-  get sentenceRows(): SentenceRow[] { return this.$store.state.sentenceRows }
+  // TODO: display wordRows (dictionary) somewhere else
+  get sentenceRows(): SentenceRow[] { return [...this.$store.state.sentenceRows, ...this.$store.state.wordRows] }
   get stringToMatch(): string { return this.searchedText.toLowerCase() }
   get englishMatches(): SentenceRow[] { return this.sentenceRows.filter(sr => sr.english.match(new RegExp(this.stringToMatch, 'i'))).sort((a, b) => a.english.length - b.english.length) };
   get globasaMatches(): SentenceRow[] { return this.sentenceRows.filter(sr => sr.globasa.match(new RegExp(this.stringToMatch, 'i'))).sort((a, b) => a.globasa.length - b.globasa.length) };

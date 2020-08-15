@@ -9,3 +9,15 @@ export const emptySentenceRowFactory = (): SentenceRow => {
     globasa: ''
   }
 }
+
+export type WordRow = {
+  english: string
+  globasa: string
+}
+
+export const emptyWordRowFactory = (): WordRow => {
+  return {
+    english: '',
+    globasa: ''
+  }
+}
