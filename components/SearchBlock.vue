@@ -44,8 +44,8 @@ export default class SearchBlock extends Vue {
 
   get sentenceRows(): SentenceRow[] { return this.$store.state.sentenceRows }
   get stringToMatch(): string { return this.searchedText.toLowerCase() }
-  get englishMatches(): SentenceRow[] { return this.sentenceRows.filter(sr => sr.english.match(new RegExp(this.stringToMatch, 'i'))) };
-  get globasaMatches(): SentenceRow[] { return this.sentenceRows.filter(sr => sr.globasa.match(new RegExp(this.stringToMatch, 'i'))) };
+  get englishMatches(): SentenceRow[] { return this.sentenceRows.filter(sr => sr.english.match(new RegExp(this.stringToMatch, 'i'))).sort((a, b) => a.english.length - b.english.length) };
+  get globasaMatches(): SentenceRow[] { return this.sentenceRows.filter(sr => sr.globasa.match(new RegExp(this.stringToMatch, 'i'))).sort((a, b) => a.globasa.length - b.globasa.length) };
   get hasEnglishMatches(): boolean { return this.englishMatches.length > 0 }
   get hasGlobasaMatches(): boolean { return this.globasaMatches.length > 0 }
 }
