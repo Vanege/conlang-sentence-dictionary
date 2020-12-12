@@ -3,18 +3,18 @@ import { isDefined } from '~/tools/type-guards'
 import { SentenceRow, emptySentenceRowFactory, WordRow, emptyWordRowFactory } from '~/types'
 
 type State = {
-  sentenceRows: SentenceRow[],
+  englishSentenceRows: SentenceRow[],
   wordRows: WordRow[]
 }
 
 export const state = (): State => ({
-  sentenceRows: [],
+  englishSentenceRows: [],
   wordRows: []
 })
 
 export const mutations = {
-  setSentenceRows (state: State, payload) {
-    state.sentenceRows = payload
+  setEnglishSentenceRows (state: State, payload) {
+    state.englishSentenceRows = payload
   },
   setWordRows (state: State, payload) {
     state.wordRows = payload
@@ -36,22 +36,22 @@ const getSentences = async function(store: Store<State>, that: any) {
   const json = await that.$axios.$get(url)
   const entries = json.feed.entry.map(e => e.gs$cell)
 
-  let sentenceRows: SentenceRow[] = []
+  let englishSentenceRows: SentenceRow[] = []
   for (const entry of entries) {
     const { row, col, inputValue } = entry
     const sentenceRowPatch = {
       ...(col === '1' && { english: inputValue }),
       ...(col === '2' && { globasa: inputValue })
     }
-    const sentenceRow = sentenceRows[row]
-    sentenceRows[row] = isDefined(sentenceRow) ? { ...sentenceRow, ...sentenceRowPatch } : { ...emptySentenceRowFactory(), ...sentenceRowPatch }
+    const sentenceRow = englishSentenceRows[row]
+    englishSentenceRows[row] = isDefined(sentenceRow) ? { ...sentenceRow, ...sentenceRowPatch } : { ...emptySentenceRowFactory(), ...sentenceRowPatch }
   }
-  sentenceRows = sentenceRows.filter(wR => isDefined(wR))
+  englishSentenceRows = englishSentenceRows.filter(wR => isDefined(wR))
   // remove the first row that names the columns
-  sentenceRows.shift()
+  englishSentenceRows.shift()
   // remove the rows that are comments
-  sentenceRows = sentenceRows.filter(sr => !sr.english.includes('--'))
-  store.commit('setSentenceRows', sentenceRows)
+  englishSentenceRows = englishSentenceRows.filter(sr => !sr.english.includes('--'))
+  store.commit('setEnglishSentenceRows', englishSentenceRows)
 }
 
 const getWords = async function(store: Store<State>, that: any) {

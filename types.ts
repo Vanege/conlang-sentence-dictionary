@@ -1,3 +1,4 @@
+// TODO: change name "english" to "otherLanguage"
 export type SentenceRow = {
   english: string
   globasa: string
