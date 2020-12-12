@@ -13,7 +13,7 @@
         </div>
         <div v-for="(match, index) in ENGLBSMatches" :key="`english-match-${index}`" class="match">
           <template v-if="index < matchesMax">
-            EN: <b>{{ match.english }}</b><br>GB: {{ match.globasa }}
+            EN: <b>{{ match.otherLanguage }}</b><br>GB: {{ match.globasa }}
           </template>
         </div>
       </template>
@@ -25,7 +25,7 @@
         </div>
         <div v-for="(match, index) in GLBSENMatches" :key="`globasa-match-${index}`" class="match">
           <template v-if="index < matchesMax">
-            EN: {{ match.english }}<br>GB: <b>{{ match.globasa }}</b>
+            EN: {{ match.otherLanguage }}<br>GB: <b>{{ match.globasa }}</b>
           </template>
         </div>
       </template>
@@ -45,7 +45,7 @@ export default class SearchBlock extends Vue {
   // TODO: display wordRows (dictionary) somewhere else
   get ENGLBSRows(): SentenceRow[] { return [...this.$store.state.englishSentenceRows, ...this.$store.state.wordRows] }
   get stringToMatch(): string { return this.searchedText.toLowerCase() }
-  get ENGLBSMatches(): SentenceRow[] { return this.ENGLBSRows.filter(sr => sr.english.match(new RegExp(this.stringToMatch, 'i'))).sort((a, b) => a.english.length - b.english.length) };
+  get ENGLBSMatches(): SentenceRow[] { return this.ENGLBSRows.filter(sr => sr.otherLanguage.match(new RegExp(this.stringToMatch, 'i'))).sort((a, b) => a.otherLanguage.length - b.otherLanguage.length) };
   get GLBSENMatches(): SentenceRow[] { return this.ENGLBSRows.filter(sr => sr.globasa.match(new RegExp(this.stringToMatch, 'i'))).sort((a, b) => a.globasa.length - b.globasa.length) };
   get hasENGLBSMatches(): boolean { return this.ENGLBSMatches.length > 0 }
   get hasGLBSENMatches(): boolean { return this.GLBSENMatches.length > 0 }

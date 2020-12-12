@@ -1,24 +1,23 @@
-// TODO: change name "english" to "otherLanguage"
 export type SentenceRow = {
-  english: string
+  otherLanguage: string
   globasa: string
 }
 
 export const emptySentenceRowFactory = (): SentenceRow => {
   return {
-    english: '',
+    otherLanguage: '',
     globasa: ''
   }
 }
 
 export type WordRow = {
-  english: string
+  otherLanguage: string
   globasa: string
 }
 
 export const emptyWordRowFactory = (): WordRow => {
   return {
-    english: '',
+    otherLanguage: '',
     globasa: ''
   }
 }

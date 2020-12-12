@@ -43,7 +43,7 @@ const getSentences = async function(store: Store<State>, that: any) {
   for (const entry of entries) {
     const { row, col, inputValue } = entry
     const sentenceRowPatch = {
-      ...(col === '1' && { english: inputValue }),
+      ...(col === '1' && { otherLanguage: inputValue }),
       ...(col === '2' && { globasa: inputValue })
     }
     const sentenceRow = englishSentenceRows[row]
@@ -53,7 +53,7 @@ const getSentences = async function(store: Store<State>, that: any) {
   // remove the first row that names the columns
   englishSentenceRows.shift()
   // remove the rows that are comments
-  englishSentenceRows = englishSentenceRows.filter(sr => !sr.english.includes('--'))
+  englishSentenceRows = englishSentenceRows.filter(sr => !sr.otherLanguage.includes('--'))
   store.commit('setProperty', {
     property: 'englishSentenceRows',
     value: englishSentenceRows
@@ -70,7 +70,7 @@ const getWords = async function(store: Store<State>, that: any) {
   for (const entry of entries) {
     const { row, col, inputValue } = entry
     const wordRowPatch = {
-      ...(col === '3' && { english: inputValue }),
+      ...(col === '3' && { otherLanguage: inputValue }),
       ...(col === '1' && { globasa: inputValue })
     }
     const wordRow = wordRows[row]
