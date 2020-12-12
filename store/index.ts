@@ -64,7 +64,7 @@ const getWords = async function(store: Store<State>, that: any) {
   for (const entry of entries) {
     const { row, col, inputValue } = entry
     const wordRowPatch = {
-      ...(col === '4' && { english: inputValue }),
+      ...(col === '3' && { english: inputValue }),
       ...(col === '1' && { globasa: inputValue })
     }
     const wordRow = wordRows[row]
