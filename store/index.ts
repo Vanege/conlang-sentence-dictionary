@@ -13,11 +13,14 @@ export const state = (): State => ({
 })
 
 export const mutations = {
-  setEnglishSentenceRows (state: State, payload) {
-    state.englishSentenceRows = payload
-  },
-  setWordRows (state: State, payload) {
-    state.wordRows = payload
+  setProperty<Property extends keyof State> (state: State, {
+    property,
+    value
+  }: {
+    property: Property,
+    value: State[Property]
+  }) {
+    state[property] = value
   }
 }
 
@@ -51,7 +54,10 @@ const getSentences = async function(store: Store<State>, that: any) {
   englishSentenceRows.shift()
   // remove the rows that are comments
   englishSentenceRows = englishSentenceRows.filter(sr => !sr.english.includes('--'))
-  store.commit('setEnglishSentenceRows', englishSentenceRows)
+  store.commit('setProperty', {
+    property: 'englishSentenceRows',
+    value: englishSentenceRows
+  })
 }
 
 const getWords = async function(store: Store<State>, that: any) {
@@ -74,5 +80,8 @@ const getWords = async function(store: Store<State>, that: any) {
   // remove the first row that names the columns
   wordRows.shift()
   // TODO formatting of the english translation
-  store.commit('setWordRows', wordRows)
+  store.commit('setProperty', {
+    property: 'wordRows',
+    value: wordRows
+  })
 }
