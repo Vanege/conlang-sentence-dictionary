@@ -7,28 +7,18 @@
       value.sync="searchedText"
     />
     <template v-if="searchedText.length > 2">
-      <template v-if="hasENGLBSMatches">
-        <div class="matches-header">
-          English -> Globasa matches:
-        </div>
-        <div v-for="(match, index) in ENGLBSMatches" :key="`english-match-${index}`" class="match">
-          <template v-if="index < matchesMax">
-            EN: <b>{{ match.otherLanguage }}</b><br>GB: {{ match.globasa }}
-          </template>
-        </div>
-      </template>
-    </template>
-    <template v-if="searchedText.length > 2">
-      <template v-if="hasGLBSENMatches">
-        <div class="matches-header">
-          Globasa -> English matches:
-        </div>
-        <div v-for="(match, index) in GLBSENMatches" :key="`globasa-match-${index}`" class="match">
-          <template v-if="index < matchesMax">
-            EN: {{ match.otherLanguage }}<br>GB: <b>{{ match.globasa }}</b>
-          </template>
-        </div>
-      </template>
+      <ListOfMatches
+        :matches="ENGLBSMatches"
+        :title="'English -> Globasa matches'"
+        :other-language-code="'EN'"
+        :is-other-language-bolded="true"
+      />
+      <ListOfMatches
+        :matches="hasGLBSENMatches"
+        :title="'Globasa -> English matches'"
+        :other-language-code="'EN'"
+        :is-globasa-bolded="true"
+      />
     </template>
   </div>
 </template>
@@ -36,8 +26,13 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { SentenceRow } from '~/types'
+import ListOfMatches from '~/components/ListOfMatches.vue'
 
-@Component
+@Component({
+  components: {
+    ListOfMatches
+  }
+})
 export default class SearchBlock extends Vue {
   searchedText: string = ''
   matchesMax: number = 20
