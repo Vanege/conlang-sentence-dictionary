@@ -1,11 +1,12 @@
 <template>
   <div v-if="matches.length > 0">
-    <div class="matches-title">
+    <div class="matches-title" :style="{'color': titleColor}">
       {{ title }}
     </div>
     <div v-for="(match, index) in matches" :key="`${otherLanguageCode}-${isOtherLanguageBolded}-match-${index}`" class="match">
       <template v-if="index < MAX_MATCHES">
-        {{ otherLanguageCode }}: <span :class="{'bolded': isOtherLanguageBolded}">{{ match.otherLanguage }}</span><br>GLBS: <span :class="{'bolded': isGlobasaBolded}">{{ match.globasa }}</span>
+        {{ otherLanguageCode }}: <span :class="{'bolded': isOtherLanguageBolded}">{{ match.otherLanguage }}</span><br>
+        GL: <span :class="{'bolded': isGlobasaBolded}">{{ match.globasa }}</span>
       </template>
     </div>
   </div>
@@ -19,6 +20,7 @@ import { SentenceRow } from '~/types'
 export default class ListOfMatches extends Vue {
   @Prop({ default: [] }) matches!: SentenceRow[];
   @Prop({ default: 'xxx -> xxx matches:' }) title!: string;
+  @Prop({ default: 'black' }) titleColor!: string;
   @Prop({ default: 'EN' }) otherLanguageCode!: string;
   @Prop({ default: false }) isOtherLanguageBolded!: boolean;
   @Prop({ default: false }) isGlobasaBolded!: boolean;

@@ -3,11 +3,13 @@ import { isDefined } from '~/tools/type-guards'
 import { SentenceRow, emptySentenceRowFactory, WordRow, emptyWordRowFactory } from '~/types'
 
 type State = {
+  esperantoSentenceRows: SentenceRow[],
   englishSentenceRows: SentenceRow[],
   wordRows: WordRow[]
 }
 
 export const state = (): State => ({
+  esperantoSentenceRows: [],
   englishSentenceRows: [],
   wordRows: []
 })
@@ -27,37 +29,54 @@ export const mutations = {
 export const actions = {
   async getStoreData (store: Store<State>) {
     await Promise.all([
-      getSentences(store, this),
+      getEsperantoSentences(store, this),
+      getEnglishSentences(store, this),
       getWords(store, this)
     ])
   }
 }
 
-const getSentences = async function(store: Store<State>, that: any) {
-  const googleSpreadsheetId = '1aeo2v0MG6VGSio12-t0issmL1N2DIdwG4l5GpMFBVIc'
-  const url = `https://spreadsheets.google.com/feeds/cells/${googleSpreadsheetId}/1/public/full?alt=json`
+const getEsperantoSentences = async (store: Store<State>, that: any) => {
+  const GOOGLE_SPREADSHEET_ID = '1aeo2v0MG6VGSio12-t0issmL1N2DIdwG4l5GpMFBVIc'
+  const ESPERANTO_PAGE_ID = 2
+  const esperantoSentenceRows = await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_PAGE_ID)
+  store.commit('setProperty', {
+    property: 'esperantoSentenceRows',
+    value: esperantoSentenceRows
+  })
+}
+
+const getEnglishSentences = async (store: Store<State>, that: any) => {
+  const GOOGLE_SPREADSHEET_ID = '1aeo2v0MG6VGSio12-t0issmL1N2DIdwG4l5GpMFBVIc'
+  const ENGLISH_PAGE_ID = 1
+  const englishSentenceRows = await getSentences(that, GOOGLE_SPREADSHEET_ID, ENGLISH_PAGE_ID)
+  store.commit('setProperty', {
+    property: 'englishSentenceRows',
+    value: englishSentenceRows
+  })
+}
+
+const getSentences = async function(that: any, googleSpreadsheetId, pageId) {
+  const url = `https://spreadsheets.google.com/feeds/cells/${googleSpreadsheetId}/${pageId}/public/full?alt=json`
   const json = await that.$axios.$get(url)
   const entries = json.feed.entry.map(e => e.gs$cell)
 
-  let englishSentenceRows: SentenceRow[] = []
+  let sentenceRows: SentenceRow[] = []
   for (const entry of entries) {
     const { row, col, inputValue } = entry
     const sentenceRowPatch = {
       ...(col === '1' && { otherLanguage: inputValue }),
       ...(col === '2' && { globasa: inputValue })
     }
-    const sentenceRow = englishSentenceRows[row]
-    englishSentenceRows[row] = isDefined(sentenceRow) ? { ...sentenceRow, ...sentenceRowPatch } : { ...emptySentenceRowFactory(), ...sentenceRowPatch }
+    const sentenceRow = sentenceRows[row]
+    sentenceRows[row] = isDefined(sentenceRow) ? { ...sentenceRow, ...sentenceRowPatch } : { ...emptySentenceRowFactory(), ...sentenceRowPatch }
   }
-  englishSentenceRows = englishSentenceRows.filter(wR => isDefined(wR))
+  sentenceRows = sentenceRows.filter(wR => isDefined(wR))
   // remove the first row that names the columns
-  englishSentenceRows.shift()
+  sentenceRows.shift()
   // remove the rows that are comments
-  englishSentenceRows = englishSentenceRows.filter(sr => !sr.otherLanguage.includes('--'))
-  store.commit('setProperty', {
-    property: 'englishSentenceRows',
-    value: englishSentenceRows
-  })
+  sentenceRows = sentenceRows.filter(sr => !sr.otherLanguage.includes('--'))
+  return sentenceRows
 }
 
 const getWords = async function(store: Store<State>, that: any) {
