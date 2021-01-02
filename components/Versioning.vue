@@ -2,6 +2,7 @@
   <div class="my-container">
     <br><a :href="corpusLink" target="_blank">Sentence corpus link</a>
     <br><a :href="englishDictionary" target="_blank">Globasa English dictionary</a>
+    <br>v0.0.3: For Esperanto to/from Globasa, add sentences from Ektor and Miraheze (checked)
     <br>v0.0.2: Can also match Esperanto -> Globasa and Globasa -> Esperanto
     <br>v0.0.1: Can match only English and Globasa substrings
   </div>

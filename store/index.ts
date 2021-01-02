@@ -38,8 +38,14 @@ export const actions = {
 
 const getEsperantoSentences = async (store: Store<State>, that: any) => {
   const GOOGLE_SPREADSHEET_ID = '1aeo2v0MG6VGSio12-t0issmL1N2DIdwG4l5GpMFBVIc'
-  const ESPERANTO_PAGE_ID = 2
-  const esperantoSentenceRows = await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_PAGE_ID)
+  const ESPERANTO_VANEGE_PAGE_ID = 2
+  const ESPERANTO_EKTOR_PAGE_ID = 3
+  const ESPERANTO_MIRAHEZE_PAGE_ID = 4
+  const esperantoSentenceRows = [
+    ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_VANEGE_PAGE_ID)),
+    ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_EKTOR_PAGE_ID)),
+    ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_MIRAHEZE_PAGE_ID))
+  ]
   store.commit('setProperty', {
     property: 'esperantoSentenceRows',
     value: esperantoSentenceRows
