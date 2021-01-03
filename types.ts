@@ -21,3 +21,15 @@ export const emptyWordRowFactory = (): WordRow => {
     globasa: ''
   }
 }
+
+export type EsperantoLanguguSentenceRow = {
+  esperanto: string
+  langugu: string
+}
+
+export const emptyEsperantoLanguguSentenceRowFactory = (): EsperantoLanguguSentenceRow => {
+  return {
+    esperanto: '',
+    langugu: ''
+  }
+}

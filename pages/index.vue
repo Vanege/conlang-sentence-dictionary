@@ -7,7 +7,7 @@
         <Versioning />
       </template>
       <template v-if="targetedConlang === 'Langugu'">
-        TODO
+        <SearchBlockLangugu class="mt-6" />
       </template>
     </div>
   </div>
@@ -19,12 +19,14 @@ import { Context } from '@nuxt/types'
 import TargetedConlangSelector from '~/components/TargetedConlangSelector.vue'
 import SearchBlock from '~/components/SearchBlock.vue'
 import Versioning from '~/components/Versioning.vue'
+import SearchBlockLangugu from '~/components/SearchBlockLangugu.vue'
 
 @Component({
   components: {
     TargetedConlangSelector,
     SearchBlock,
-    Versioning
+    Versioning,
+    SearchBlockLangugu
   }
 })
 export default class App extends Vue {

@@ -1,19 +1,21 @@
 import { Store } from 'vuex/types/index'
 import { isDefined } from '~/tools/type-guards'
-import { SentenceRow, emptySentenceRowFactory, WordRow, emptyWordRowFactory } from '~/types'
+import { emptySentenceRowFactory, emptyWordRowFactory, SentenceRow, WordRow, EsperantoLanguguSentenceRow, emptyEsperantoLanguguSentenceRowFactory } from '~/types'
 
 type State = {
   targetedConlang: string;
   esperantoSentenceRows: SentenceRow[],
   englishSentenceRows: SentenceRow[],
-  wordRows: WordRow[]
+  wordRows: WordRow[],
+  esperantoLanguguSentenceRows: EsperantoLanguguSentenceRow[]
 }
 
 export const state = (): State => ({
   targetedConlang: 'Globasa',
   esperantoSentenceRows: [],
   englishSentenceRows: [],
-  wordRows: []
+  wordRows: [],
+  esperantoLanguguSentenceRows: []
 })
 
 export const mutations = {
@@ -33,7 +35,8 @@ export const actions = {
     await Promise.all([
       getEsperantoSentences(store, this),
       getEnglishSentences(store, this),
-      getWords(store, this)
+      getWords(store, this),
+      getEsperantoLanguguSentences(store, this)
     ])
   }
 }
@@ -110,5 +113,35 @@ const getWords = async function(store: Store<State>, that: any) {
   store.commit('setProperty', {
     property: 'wordRows',
     value: wordRows
+  })
+}
+
+const getEsperantoLanguguSentences = async (store: Store<State>, that: any) => {
+  const GOOGLE_SPREADSHEET_ID = '1aeo2v0MG6VGSio12-t0issmL1N2DIdwG4l5GpMFBVIc'
+  const ESPERANTO_LANGUGU_PAGE_ID = 5
+
+  const url = `https://spreadsheets.google.com/feeds/cells/${GOOGLE_SPREADSHEET_ID}/${ESPERANTO_LANGUGU_PAGE_ID}/public/full?alt=json`
+  const json = await that.$axios.$get(url)
+  const entries = json.feed.entry.map(e => e.gs$cell)
+
+  let sentenceRows: EsperantoLanguguSentenceRow[] = []
+  for (const entry of entries) {
+    const { row, col, inputValue } = entry
+    const sentenceRowPatch = {
+      ...(col === '1' && { esperanto: inputValue }),
+      ...(col === '2' && { langugu: inputValue })
+    }
+    const sentenceRow = sentenceRows[row]
+    sentenceRows[row] = isDefined(sentenceRow) ? { ...sentenceRow, ...sentenceRowPatch } : { ...emptyEsperantoLanguguSentenceRowFactory(), ...sentenceRowPatch }
+  }
+  sentenceRows = sentenceRows.filter(wR => isDefined(wR))
+  // remove the first row that names the columns
+  sentenceRows.shift()
+  // remove the rows that are comments
+  sentenceRows = sentenceRows.filter(sr => !sr.esperanto.includes('--'))
+
+  store.commit('setProperty', {
+    property: 'esperantoLanguguSentenceRows',
+    value: sentenceRows
   })
 }
