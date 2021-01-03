@@ -3,12 +3,14 @@ import { isDefined } from '~/tools/type-guards'
 import { SentenceRow, emptySentenceRowFactory, WordRow, emptyWordRowFactory } from '~/types'
 
 type State = {
+  targetedConlang: string;
   esperantoSentenceRows: SentenceRow[],
   englishSentenceRows: SentenceRow[],
   wordRows: WordRow[]
 }
 
 export const state = (): State => ({
+  targetedConlang: 'Globasa',
   esperantoSentenceRows: [],
   englishSentenceRows: [],
   wordRows: []
