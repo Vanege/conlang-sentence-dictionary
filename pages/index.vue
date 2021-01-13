@@ -4,10 +4,12 @@
     <div class="ma-2">
       <template v-if="targetedConlang === 'Globasa'">
         <SearchBlock class="mt-6" />
+        <a href="https://www.globasa.net/" target="_blank">Retejo de Globasa</a>
         <Versioning />
       </template>
       <template v-if="targetedConlang === 'Langugu'">
         <SearchBlockLangugu class="mt-6" />
+        <a href="https://vanege.github.io/Langugu/" target="_blank">Retejo de Langugu</a>
       </template>
     </div>
   </div>
