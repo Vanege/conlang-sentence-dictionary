@@ -3,7 +3,7 @@
     <v-text-field
       v-model="searchedText"
       outlined
-      placeholder="Type substring in Esperanto, English or Globasa to browse matches in the corpuses or the dictionary"
+      placeholder="Tajpu almenaŭ 3 literojn en Esperanto, en la Angla aŭ en Globasa por traserĉi la korpuson"
       value.sync="searchedText"
     />
     <template v-if="searchedText.length > 2">

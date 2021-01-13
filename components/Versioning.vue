@@ -20,6 +20,6 @@ export default class Versioning extends Vue {
 
 <style lang="scss" scoped>
 .my-container {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 </style>
