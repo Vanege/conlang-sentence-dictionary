@@ -46,10 +46,12 @@ const getEsperantoSentences = async (store: Store<State>, that: any) => {
   const ESPERANTO_VANEGE_PAGE_ID = 2
   const ESPERANTO_EKTOR_PAGE_ID = 3
   const ESPERANTO_MIRAHEZE_PAGE_ID = 4
+  const ESPERANTO_OFICIALAJ_TRADUKOJ_PAGE_ID = 6
   const esperantoSentenceRows = [
     ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_VANEGE_PAGE_ID)),
     ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_EKTOR_PAGE_ID)),
-    ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_MIRAHEZE_PAGE_ID))
+    ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_MIRAHEZE_PAGE_ID)),
+    ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_OFICIALAJ_TRADUKOJ_PAGE_ID))
   ]
   store.commit('setProperty', {
     property: 'esperantoSentenceRows',
