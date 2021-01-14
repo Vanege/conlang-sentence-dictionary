@@ -46,7 +46,7 @@ const getEsperantoSentences = async (store: Store<State>, that: any) => {
   const ESPERANTO_VANEGE_PAGE_ID = 2
   const ESPERANTO_EKTOR_PAGE_ID = 3
   const ESPERANTO_MIRAHEZE_PAGE_ID = 4
-  const ESPERANTO_OFICIALAJ_TRADUKOJ_PAGE_ID = 6
+  const ESPERANTO_OFICIALAJ_TRADUKOJ_PAGE_ID = 5
   const esperantoSentenceRows = [
     ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_VANEGE_PAGE_ID)),
     ...(await getSentences(that, GOOGLE_SPREADSHEET_ID, ESPERANTO_EKTOR_PAGE_ID)),
@@ -120,7 +120,7 @@ const getWords = async function(store: Store<State>, that: any) {
 
 const getEsperantoLanguguSentences = async (store: Store<State>, that: any) => {
   const GOOGLE_SPREADSHEET_ID = '1aeo2v0MG6VGSio12-t0issmL1N2DIdwG4l5GpMFBVIc'
-  const ESPERANTO_LANGUGU_PAGE_ID = 5
+  const ESPERANTO_LANGUGU_PAGE_ID = 6
 
   const url = `https://spreadsheets.google.com/feeds/cells/${GOOGLE_SPREADSHEET_ID}/${ESPERANTO_LANGUGU_PAGE_ID}/public/full?alt=json`
   const json = await that.$axios.$get(url)
